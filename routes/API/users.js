@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 
 const User = require('../../models/User');
@@ -78,8 +79,6 @@ router.post("/", (req, res) => {
 
 
 router.post('/login', (req, res) => {
-    console.log("UserLogin route accessed");
-    console.log("Form data within Route:", req.body);
     User.findOne({ email: req.body.userEmail })
       .then(user => {
         if (!user) {
@@ -93,8 +92,9 @@ router.post('/login', (req, res) => {
                 id: user.id,
                 username: user.username
               };
+
               
-              jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
+              jwt.sign(payload, process.env.REACT_APP_JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
                 res.json({
                   success: true,
                   token: 'Bearer ' + token

@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -29,18 +29,19 @@ function Home() {
         const { userEmail, userPassword } = user; 
       
         try {
-          const response = await axios.post('http://localhost:8082/API/users/login', {
+          const response = await axios.post("http://localhost:8082/API/users/login", {
             userEmail,
             userPassword,
           });
           
           if (response.data.success) {
-            const { token } = response.data;
+            const { token, username } = response.data;
       
             // store the token in localStorage and use it for authenticated requests
             localStorage.setItem('jwtToken', token);
             
             // redirect to a protected route or homepage after login
+            console.log("Login successful! with Username: ", username);
             navigate('/dashboard');
           }
         } catch (err) {
@@ -52,7 +53,7 @@ function Home() {
         <div>
             <section className="bg-gray-50">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                <a href="#" className="flex items-center mb-6 text-7xl font-semibold text-purple-900">
+                <a href = "/" className="flex items-center mb-6 text-7xl font-semibold text-purple-900">
                     RateMyProf    
                 </a>
                 <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0">
