@@ -37,7 +37,7 @@ router.delete('/:id', (req, res) => {
 });
 
 router.post("/", (req, res) => {
-    console.log("UserCreate route accessed");
+    console.log("User Create route accessed");
     
 
     if (req.body.password !== req.body.confirmPassword) {

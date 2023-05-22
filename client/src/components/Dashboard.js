@@ -1,32 +1,49 @@
 import React from "react";
 // import axios from "axios";
 // import { Link } from "react-router-dom";
-// import { useState } from "react";
+import { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
+import NavBar from "../components/Navbar";
 
 
 function Dashboard() {
 
-    const parseJwt = (token) => {
+    const [username, setUsername] = useState("");
+    const [id, setId] = useState("");
+
+    useEffect(() => {
+        const parseJwt = (token) => {
         try {
-          return JSON.parse(atob(token.split('.')[1]));
+            return JSON.parse(atob(token.split(".")[1]));
         } catch (e) {
-          return null;
+            return null;
         }
-      };
+        };
 
+        const token = localStorage.getItem("jwtToken");
+        const tokenPayload = parseJwt(token);
 
-    const token = localStorage.getItem('jwtToken');
-    const tokenPayload = parseJwt(token);
+        if (tokenPayload) {
+        setUsername(tokenPayload.username);
+        setId(tokenPayload.id);
+        }
+    }, []);
 
-    const username = tokenPayload.username;
-    const id = tokenPayload.id;
-
-    
 
     return (
         <div>
-            <h1>Welcome ! {username} with ID: {id}</h1>
+            <NavBar />
+            <h1 className = "text-4xl text-center mt-10 font-bold text-purple-900">Welcome, {username}</h1>
+            <h4 className = "text-2xl text-center mt-10 font-bold text-purple-900">
+                Welcome to RateMyProf, the best place to rate your professors!
+            </h4>
+            <h2 className = "text-2xl text-center mt-10 font-bold text-purple-900">
+                Your Comments
+            </h2>
+
+            <div className = "flex justify-center">
+            </div>
+
         </div>
     );
 }

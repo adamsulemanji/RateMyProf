@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 
 const ProfessorSchema = new mongoose.Schema({
-    id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'professor'
+    username: {
+        type: String,
+        required: true
     },
-    name: {
+    password: {
         type: String,
         required: true
     },
@@ -20,10 +20,6 @@ const ProfessorSchema = new mongoose.Schema({
     }, 
     phone: {
         type: String,
-        required: true
-    },
-    averageRating: {
-        type: Number,
         required: true
     },
     sumRatings: {

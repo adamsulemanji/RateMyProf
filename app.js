@@ -4,6 +4,8 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
 const user = require('./routes/API/users');
+const comment = require('./routes/API/comments');
+const professor = require('./routes/API/professors');
 
 const app = express();
 
@@ -14,6 +16,8 @@ app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => res.send('Hello world!'));
 app.use('/API/users', user);
+app.use('/API/comments', comment);
+app.use('/API/professors', professor);
 
 
 const port = process.env.PORT || 8082;

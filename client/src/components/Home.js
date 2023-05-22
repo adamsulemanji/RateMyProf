@@ -21,6 +21,9 @@ function Home() {
     
     const handleSubmit = async (e) => {
 
+        // clear the local storage
+        localStorage.clear();
+
         console.log("Form submitted");
         console.log("Form data:", user);
 
