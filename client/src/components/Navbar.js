@@ -1,16 +1,15 @@
 import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 function NavBar(props) {
-
-
+    
     function StringCleanUp(string) {
         return string.replace(/[^0-9a-z]/gi, '').toUpperCase();
     }
+
     const userId = props.id;
     const navigate = useNavigate();
     const [showCommentBox, setShowCommentBox] = useState(false);
@@ -20,7 +19,6 @@ function NavBar(props) {
     const [letterGrade, setLetterGrade] = useState('A');
     const [showAlert, setShowAlert] = useState(false);
 
-
     const handleLogout = () => {
         localStorage.removeItem("jwtToken");
         navigate('/');
@@ -29,41 +27,28 @@ function NavBar(props) {
     const handleCommentSubmit = () => {
         console.log("Comment submitted");
         if (comment === "" || course === "" || professor === "") {
-            setShowAlert(true);
-            console.log("Missing comment data");
+        setShowAlert(true);
+        console.log("Missing comment data");
         } else {
-
-            comment = StringCleanUp(comment);
-            course = StringCleanUp(course);
-            professor = StringCleanUp(professor);
-            
-            const commentData = {
-                comment: comment,
-                course: course,
-                professor: professor,
-                letterGrade: letterGrade,
-                userId: userId
-            };
-            
-            console.log("Comment data:", commentData);
-
-            axios
-                .post("http://localhost:8082/API/comments", commentData)
-                .then(() => {
-                    setComment('');
-                    setCourse('');
-                    setProfessor('');
-                    setLetterGrade('A');
-                    setShowCommentBox(false);
-                    setShowAlert(false);
-                }
-                )
-                .catch((err) => {
-                    console.log("Error in CommentCreate!", err.response.data);
-                    console.log("Error details:", err);
-                });
-        }
+        const commentData = {
+            comment: comment,
+            course: course,
+            professor: professor,
+            letterGrade: letterGrade,
+            userId: userId
+        };
         
+        console.log("Comment data:", commentData);
+
+        props.handleCommentSubmit(commentData);
+
+        setComment('');
+        setCourse('');
+        setProfessor('');
+        setLetterGrade('A');
+        setShowCommentBox(false);
+        setShowAlert(false);
+        }
     };
 
     return (
@@ -74,7 +59,7 @@ function NavBar(props) {
                     <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">RateMyProf</span>
                 </a>
                 <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
-                    <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 rounded-lg bg-gray-500 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                         <li>
                             <Link to="/dashboard" className="block py-2 pl-3 pr-4 m-1 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-purple-700 md:p-0 md:dark:hover:text-purple-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Home</Link>
                         </li>
@@ -120,9 +105,10 @@ function NavBar(props) {
                                         />
                                         {
                                             showAlert && (
-                                                <div className="bg-red-500 text-white px-4 py-3 rounded relative" role="alert">
-                                                    <strong className="font-bold">Oops!</strong>
-                                                    <span className="block sm:inline"> Please fill in all fields!</span>
+                                                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-full mb-4" role="alert">
+                                                    <strong class="font-bold">Holy smokes! </strong>
+                                                    <span class="block sm:inline">Please fill in all fields</span>
+                                                    
                                                 </div>
                                             )
                                         }

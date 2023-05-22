@@ -66,5 +66,12 @@ router.get('/course/:id', (req, res) => {
         .catch(err => res.status(404).json({ nocommentsfound: 'No Comments found' }));
 });
 
+router.get('/user/:id', (req, res) => {
+    Comment.find({ userId: req.params.id })
+        .then(comment => res.json(comment))
+        .catch(err => res.status(404).json({ nocommentsfound: 'No Comments found' }));
+});
+
+
 module.exports = router;
 
