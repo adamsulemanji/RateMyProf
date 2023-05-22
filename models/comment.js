@@ -2,21 +2,17 @@ const mongoose = require('mongoose');
 
 
 const CommentSchema = new mongoose.Schema({
-    id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'comment'
-    },
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
-    professor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'professor'
-    },
     course: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'course'
+        type: String,
+        required: true
+    },
+    professor: {
+        type: String,
+        required: true
     },
     comment: {
         type: String,
@@ -26,7 +22,7 @@ const CommentSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-});
+} , { timestamps: true });
 
 
 module.exports = Comment = mongoose.model('comment', CommentSchema);

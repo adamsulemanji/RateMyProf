@@ -42,9 +42,9 @@ router.post("/", (req, res) => {
     
 
     const newComment = new Comment({
-        user: req.body.user,
-        professor: req.body.professor,
+        userId: req.body.userId,
         course: req.body.course,
+        professor: req.body.professor,
         comment: req.body.comment,
         letterGrade: req.body.letterGrade
     });
@@ -54,14 +54,12 @@ router.post("/", (req, res) => {
         .catch(err => res.status(400).json({ error: 'Unable to add this comment' }));
 });
 
-// get comments by professor id
 router.get('/professor/:id', (req, res) => {
     Comment.find({ professor: req.params.id })
         .then(comment => res.json(comment))
         .catch(err => res.status(404).json({ nocommentsfound: 'No Comments found' }));
 });
 
-// get comments by course id
 router.get('/course/:id', (req, res) => {
     Comment.find({ course: req.params.id })
         .then(comment => res.json(comment))

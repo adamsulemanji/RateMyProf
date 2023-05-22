@@ -4,6 +4,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 import NavBar from "../components/Navbar";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function Dashboard() {
@@ -24,15 +25,15 @@ function Dashboard() {
         const tokenPayload = parseJwt(token);
 
         if (tokenPayload) {
-        setUsername(tokenPayload.username);
-        setId(tokenPayload.id);
+            setUsername(tokenPayload.username);
+            setId(tokenPayload.id);
         }
     }, []);
 
 
     return (
         <div>
-            <NavBar />
+            <NavBar id = {id} />
             <h1 className = "text-4xl text-center mt-10 font-bold text-purple-900">Welcome, {username}</h1>
             <h4 className = "text-2xl text-center mt-10 font-bold text-purple-900">
                 Welcome to RateMyProf, the best place to rate your professors!
