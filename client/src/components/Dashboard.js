@@ -62,7 +62,7 @@ function Dashboard() {
             <h2 className = "text-2xl text-center mt-10 font-bold text-purple-900">
                 Your Comments
             </h2>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-5 gap-2">
                 {comments.map((comment) => (
                     <CommentTile course = {comment.course} professor = {comment.professor} letterGrade = {comment.letterGrade} comment = {comment.comment} />
                 ))}
