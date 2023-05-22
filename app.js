@@ -11,6 +11,19 @@ const professor = require('./routes/API/professors');
 
 const app = express();
 
+function requireHTTPS(req, res, next) {
+    if (
+      !req.secure &&
+      req.get("x-forwarded-proto") !== "https" &&
+      process.env.NODE_ENV !== "development"
+    ) {
+      return res.redirect("https://" + req.get("host") + req.url);
+    }
+    next();
+  }
+  
+  app.use(requireHTTPS);
+
 connectDB();
 
 let environment = process.env.REACT_APP_NODE_ENV;
@@ -32,7 +45,7 @@ if (environment === 'production') {
     app.use(express.static('client/build'));
 
     app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
     });
 }
 
