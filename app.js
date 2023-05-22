@@ -11,18 +11,18 @@ const professor = require('./routes/API/professors');
 
 const app = express();
 
-function requireHTTPS(req, res, next) {
-    if (
-      !req.secure &&
-      req.get("x-forwarded-proto") !== "https" &&
-      process.env.NODE_ENV !== "development"
-    ) {
-      return res.redirect("https://" + req.get("host") + req.url);
-    }
-    next();
-  }
+// function requireHTTPS(req, res, next) {
+//     if (
+//       !req.secure &&
+//       req.get("x-forwarded-proto") !== "https" &&
+//       process.env.NODE_ENV !== "development"
+//     ) {
+//       return res.redirect("https://" + req.get("host") + req.url);
+//     }
+//     next();
+// }
   
-  app.use(requireHTTPS);
+// app.use(requireHTTPS);
 
 connectDB();
 
