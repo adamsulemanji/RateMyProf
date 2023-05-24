@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 function Signup(props) {
     const navigate = useNavigate();
     const [alert, setAlert] = useState(false);
+    const [alertResponse, setAlertResponse] = useState("");
 
     const [formInput, setFormInput] = useState({
         username: "",
@@ -56,6 +57,27 @@ function Signup(props) {
           .catch((err) => {
             console.log("Error in UserCreate!", err.response.data);
             console.log("Error details:", err);
+                if (err.response.data) {
+                    let errorMessage = "";
+                if (err.response.data.username) {
+                    errorMessage += err.response.data.username;
+                }
+                if (err.response.data.email) {
+                    errorMessage += " " + err.response.data.email;
+                }
+                if (err.response.data.password) {
+                    errorMessage += " " + err.response.data.password;
+                }
+                if (err.response.data.phone) {
+                    errorMessage += " " + err.response.data.phone;
+                }
+                setAlert(true);
+                setAlertResponse(errorMessage);
+                setTimeout(() => {
+                    setAlert(false);
+                    }, 2500
+                );
+            };
           });
       };
     
@@ -70,6 +92,11 @@ function Signup(props) {
                             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                                 Create a new account
                             </h1>
+                            {alert && (
+                                <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+                                    <span className="font-medium">{alertResponse}</span> Please try again.
+                                </div>
+                            )}
                             <form className="space-y-4 md:space-y-6" action="#" onSubmit = {onSubmit}>
                                 <div>
                                     <label for="username" className="block mb-2 text-sm font-medium text-gray-900">Username</label>
@@ -97,15 +124,15 @@ function Signup(props) {
                                 </div>
                                 <div>
                                     <label for="gradYear" className="block mb-2 text-sm font-medium text-gray-900">Graduation Year</label>
-                                    <input type="text" name="gradYear" id="gradYear" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onChange={onChange}></input>
+                                    <input type="text" name="gradYear" id="gradYear" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onChange={onChange} placeholder="2024"></input>
                                 </div>
                                 <div>
                                     <label for="major" className="block mb-2 text-sm font-medium text-gray-900">Major</label>
-                                    <input type="text" name="major" id="major" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onChange={onChange}></input>
+                                    <input type="text" name="major" id="major" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onChange={onChange} placeholder="Computer Science"></input>
                                 </div>
                                 <div>
                                     <label for="classification" className="block mb-2 text-sm font-medium text-gray-900">Classification</label>
-                                    <input type="text" name="classification" id="classification" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onChange={onChange}></input>
+                                    <input type="text" name="classification" id="classification" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onChange={onChange} placeholder="Senior"></input>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <input className=" block w-full bg-purple-900 text-white p-3 rounded-lg font-bolded" type = "Submit"/>
