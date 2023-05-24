@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function Signup(props) {
     const navigate = useNavigate();
+    const [alert, setAlert] = useState(false);
 
     const [formInput, setFormInput] = useState({
         username: "",
@@ -34,7 +35,11 @@ function Signup(props) {
 
         axios
           .post("http://localhost:8082/API/users", formInput)
-          .then(() => {
+          .then((response) => {
+
+            const { token } = response.data;
+            localStorage.setItem('jwtToken', token);
+
             setFormInput({
                 username: "",
                 password: "",
@@ -68,7 +73,7 @@ function Signup(props) {
                             <form className="space-y-4 md:space-y-6" action="#" onSubmit = {onSubmit}>
                                 <div>
                                     <label for="username" className="block mb-2 text-sm font-medium text-gray-900">Username</label>
-                                    <input type="text" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onChange={onChange}></input>
+                                    <input type="text" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="" onChange={onChange} placeholder="adamsulemanji"></input>
                                 </div>
                                 <div>
                                     <label for="email" className="block mb-2 text-sm font-medium text-gray-900">Your email</label>

@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -12,6 +12,8 @@ function Home() {
         userPassword: ""
     });
 
+    const [alert, setAlert] = useState(false);
+
     const onChange = (e) => {
         console.log("Form input changed");
         setUser({ ...user, [e.target.name]: e.target.value });
@@ -21,7 +23,6 @@ function Home() {
     
     const handleSubmit = async (e) => {
 
-        // clear the local storage
         localStorage.clear();
 
         console.log("Form submitted");
@@ -49,6 +50,12 @@ function Home() {
           }
         } catch (err) {
           console.error(err.response.data);
+            if (err.response.data) {    
+                setAlert(true);
+                setTimeout(() => {
+                setAlert(false);
+                }, 2500);
+            };
         }
       };
 
@@ -64,6 +71,11 @@ function Home() {
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                             Sign in to your account
                         </h1>
+                        {alert && (
+                            <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+                                <span className="font-medium">Incorrect Email or Password!</span> Please try again.
+                            </div>
+                        )}
                         <form className="space-y-4 md:space-y-6" action="#">
                             <div>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Email</label>
