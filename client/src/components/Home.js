@@ -23,7 +23,7 @@ function Home() {
     
     const handleSubmit = async (e) => {
 
-        localStorage.clear();
+        localStorage.removeItem('jwtToken');
 
         console.log("Form submitted");
         console.log("Form data:", user);
