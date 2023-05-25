@@ -7,7 +7,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function Dashboard() {
-
     const [username, setUsername] = useState("");
     const [id, setId] = useState("");
     const [comments, setComments] = useState([]);
@@ -72,7 +71,14 @@ function Dashboard() {
         };
 
         const handleCommentEdit = (commentId, commentData) => {
-            //TODO: Add validation and implement comment editting
+            console.log("Editing comment with ID:", commentId);
+            console.log("New comment data:", commentData);
+
+            var newComment = window.prompt("Edit comment:", commentData.comment);
+
+            if (newComment !== null) { 
+                commentData.comment = newComment;
+            }
 
             axios
                 .put(`http://localhost:8082/API/comments/${commentId}`, commentData)
@@ -100,7 +106,7 @@ function Dashboard() {
             <NavBar id = {id} handleCommentSubmit = {handleCommentSubmit} />
             <h1 className = "text-4xl text-center mt-10 font-bold text-purple-900">Welcome, {username}</h1>
             <h4 className = "text-2xl text-center mt-10 font-bold text-purple-900">
-                Welcome to RateMyProf, the best place to rate your professors!
+                Welcome to RateMyProf, the best place to rate your classes!
             </h4>
             <h2 className = "text-2xl text-center mt-10 font-bold text-purple-900">
                 Your Comments

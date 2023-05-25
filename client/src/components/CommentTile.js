@@ -1,5 +1,4 @@
     import React from "react";
-    import axios from "axios";
 
     function CommentTile(props) {
         const username = props.username;
@@ -16,6 +15,9 @@
 
         const date = createdAt ? createdAt.slice(0, 10) : "";
         const time = createdAt ? createdAt.slice(11, 19) : "";
+
+        const updateDate = updatedAt ? updatedAt.slice(0, 10) : "";
+        const updateTime = updatedAt ? updatedAt.slice(11, 19) : "";
 
         return (
             <div className="flex flex-col bg-white shadow-md rounded-lg p-4 border-2 border-purple-900 w-auto overflow-auto">
@@ -45,10 +47,10 @@
                         <p className="text-sm font-bold">Grade: {letterGrade}</p>
                         <div>
                             <p className="text-sm font-bold">
-                                Date: {date} {time}
+                                Created At: {date} {time}
                             </p>
                             {updatedAt !== createdAt && (
-                                <p className="text-xs font-bold border-2 border-purple">
+                                <p className="text-xs font-bold border-2 border-purple-900 rounded-lg w-1/2 justify-center flex items-center">
                                     Edited
                                 </p>
                             )}    
