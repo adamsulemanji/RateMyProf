@@ -1,15 +1,24 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
-
+const passport = require('passport');
+const path = require('path');
 
 const user = require('./routes/API/users');
 const comment = require('./routes/API/comments');
 const professor = require('./routes/API/professors');
 
 const app = express();
+
+require('dotenv').config();
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(passport.initialize());
+require("./config/passport")(passport);
+
 
 connectDB();
 
@@ -32,7 +41,7 @@ if (environment === 'production') {
     app.use(express.static('client/build'));
 
     app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
     });
 }
 

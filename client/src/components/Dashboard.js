@@ -49,8 +49,51 @@ function Dashboard() {
                 console.log("Error details:", err);
               });
           };
-        
-    
+
+        const handleCommentDelete = (commentId) => {
+            console.log("Deleting comment with ID:", commentId);
+
+            if (window.confirm("Are you sure you want to delete this comment?")) {
+                console.log("Deleting comment with ID:", commentId);
+            } else {
+                return;
+            }
+
+            axios
+                .delete(`http://localhost:8082/API/comments/${commentId}`)
+                .then((response) => {
+                    const newComments = comments.filter((comment) => comment._id !== commentId);
+                    setComments(newComments);
+                })
+                .catch((err) => {
+                    console.log("Error in CommentDelete!", err.response.data);
+                    console.log("Error details:", err);
+                });
+        };
+
+        const handleCommentEdit = (commentId, commentData) => {
+            //TODO: Add validation and implement comment editting
+
+            axios
+                .put(`http://localhost:8082/API/comments/${commentId}`, commentData)
+                .then((response) => {
+                    const newComments = comments.map((comment) => {
+                        if (comment._id === commentId) {
+                            comment.course = commentData.course;
+                            comment.professor = commentData.professor;
+                            comment.letterGrade = commentData.letterGrade;
+                            comment.comment = commentData.comment;
+                        }
+                        return comment;
+                    });
+                    setComments(newComments);
+                })
+                .catch((err) => {
+                    console.log("Error in CommentUpdate!", err.response.data);
+                    console.log("Error details:", err);
+                });
+        };
+
 
     return (
         <div>
@@ -62,10 +105,23 @@ function Dashboard() {
             <h2 className = "text-2xl text-center mt-10 font-bold text-purple-900">
                 Your Comments
             </h2>
-            <div className="grid grid-cols-5 gap-2">
-                {comments.map((comment) => (
-                    <CommentTile course = {comment.course} professor = {comment.professor} letterGrade = {comment.letterGrade} comment = {comment.comment} />
-                ))}
+            <div className="grid grid-cols-5 gap-4 px-5">
+            {comments.map((comment) => (
+                <CommentTile
+                    key={comment._id}
+                    comment={comment.comment}
+                    username={username}
+                    id={id}
+                    userId={comment.userId}
+                    course={comment.course}
+                    professor={comment.professor}
+                    letterGrade={comment.letterGrade}
+                    createdAt={comment.createdAt}
+                    updatedAt={comment.updatedAt}
+                    handleCommentEdit={() => handleCommentEdit(comment._id, comment)}
+                    handleCommentDelete={() => handleCommentDelete(comment._id)}
+                />
+            ))}
             </div>
         </div>
     );
