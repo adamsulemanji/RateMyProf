@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import CommentTile from "../components/CommentTile";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 
 function Dashboard() {
@@ -52,12 +54,6 @@ function Dashboard() {
         const handleCommentDelete = (commentId) => {
             console.log("Deleting comment with ID:", commentId);
 
-            if (window.confirm("Are you sure you want to delete this comment?")) {
-                console.log("Deleting comment with ID:", commentId);
-            } else {
-                return;
-            }
-
             axios
                 .delete(`http://localhost:8082/API/comments/${commentId}`)
                 .then((response) => {
@@ -70,35 +66,32 @@ function Dashboard() {
                 });
         };
 
-        const handleCommentEdit = (commentId, commentData) => {
-            console.log("Editing comment with ID:", commentId);
-            console.log("New comment data:", commentData);
+        // const handleCommentEdit = (commentId, commentData) => {
+        //     axios
+        //         .put(`http://localhost:8082/API/comments/${commentId}`, commentData)
+        //         .then((response) => {
+        //             const newComments = comments.map((comment) => {
+        //                 if (comment._id === commentId) {
+        //                     comment.comment = commentData.comment;
+        //                 }
+        //                 return comment;
+        //             });
+        //             setComments(newComments);
+        //         })
+        //         .catch((err) => {
+        //             console.log("Error in CommentUpdate!", err.response.data);
+        //             console.log("Error details:", err);
+        //         });
+        // };
 
-            var newComment = window.prompt("Edit comment:", commentData.comment);
-
-            if (newComment !== null) { 
-                commentData.comment = newComment;
-            }
-
-            axios
-                .put(`http://localhost:8082/API/comments/${commentId}`, commentData)
-                .then((response) => {
-                    const newComments = comments.map((comment) => {
-                        if (comment._id === commentId) {
-                            comment.course = commentData.course;
-                            comment.professor = commentData.professor;
-                            comment.letterGrade = commentData.letterGrade;
-                            comment.comment = commentData.comment;
-                        }
-                        return comment;
-                    });
-                    setComments(newComments);
-                })
-                .catch((err) => {
-                    console.log("Error in CommentUpdate!", err.response.data);
-                    console.log("Error details:", err);
-                });
-        };
+        const handleCommentUpdate = (commentId, commentData) => {
+            setComments(comments.map((comment) => {
+              if (comment._id === commentId) {
+                return { ...comment, ...commentData };
+              }
+              return comment;
+            }));
+          };
 
 
     return (
@@ -124,7 +117,7 @@ function Dashboard() {
                     letterGrade={comment.letterGrade}
                     createdAt={comment.createdAt}
                     updatedAt={comment.updatedAt}
-                    handleCommentEdit={() => handleCommentEdit(comment._id, comment)}
+                    handleCommentUpdate={handleCommentUpdate}
                     handleCommentDelete={() => handleCommentDelete(comment._id)}
                 />
             ))}
