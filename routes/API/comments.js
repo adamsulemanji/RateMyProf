@@ -24,6 +24,8 @@ router.get('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+    console.log("CommentUpdate route accessed");
+    
     Comment.findByIdAndUpdate(req.params.id, req.body)
         .then(comment => res.json({ msg: 'Updated successfully' }))
         .catch(err =>
@@ -71,6 +73,17 @@ router.get('/user/:id', (req, res) => {
         .then(comment => res.json(comment))
         .catch(err => res.status(404).json({ nocommentsfound: 'No Comments found' }));
 });
+
+router.put('/like/:id', (req, res) => {
+    console.log("CommentLike route accessed");
+    console.log(req.body);
+    Comment.findByIdAndUpdate(req.params.id, req.body)
+        .then(comment => res.json({ msg: 'Updated successfully' }))
+        .catch(err =>
+            res.status(400).json({ error: 'Unable to update the Database' })
+        );
+});
+
 
 
 module.exports = router;

@@ -17,7 +17,7 @@ function CommentTile(props) {
         professor,
         letterGrade,
         handleCommentDelete,
-        handleCommentUpdate,
+        commentID,
       } = props;
 
     const date = createdAt ? createdAt.slice(0, 10) : "";
@@ -29,34 +29,15 @@ function CommentTile(props) {
 
     const [showDelete, setShowDelete] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
-    const [editComment, setEditComment] = useState("");
-    const [localComment, setLocalComment] = useState(comment);
 
     const handleDeleteClose = () => setShowDelete(false);
     const handleDeleteShow = () => setShowDelete(true);
 
     const handleEditClose = () => setShowEdit(false);
     const handleEditShow = () => {
-        setEditComment(comment);
         setShowEdit(true);
     }
-
-    useEffect(() => {
-        setLocalComment(comment); // update local comment state when props.comment changes
-      }, [comment]);
-
-    const handleCommentEdit = () => {
-    axios
-        .put(`http://localhost:8082/API/comments/${id}`, { comment: localComment })
-        .then((response) => {
-        props.handleCommentUpdate(id, { comment: localComment }); // call parent's update function
-        })
-        .catch((err) => {
-        console.log("Error in CommentUpdate!", err.response.data);
-        console.log("Error details:", err);
-        });
-    };
-
+    
 
     function DeleteConfirm() {
         return (
@@ -91,36 +72,65 @@ function CommentTile(props) {
     }
 
     function EditComment() {
+        const [formValue, setFormValue] = useState(comment);
+        const handleChange = (e) => {
+            setFormValue(e.target.value);
+        }
+
+        const handleCommentEdit = (commentData) => {
+            console.log("Editing comment with ID:", commentID);
+            console.log("New comment data:", commentData);
+
+            axios
+                .put(`http://localhost:8082/API/comments/${commentID}`, {comment: commentData})
+                .then((response) => {
+                    console.log(response);
+                    console.log(response.data);
+                })
+                .catch((err) => {
+                    console.log("Error in CommentEdit!", err.response.data);
+                    console.log("Error details:", err);
+                });
+
+            window.location.reload();    
+            
+        };
+    
         return (
-            <Modal show={showEdit} onHide={handleEditClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit Comment</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Comment</Form.Label>
-                            <Form.Control 
-                                as="textarea"
-                                rows={3}
-                                value={localComment} 
-                                onChange={(e) => setLocalComment(e.target.value)}
-                            />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleEditClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={() => {
-                        handleCommentEdit();
-                        handleEditClose();
-                    }}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <>
+                <Modal
+                    show = {showEdit}
+                    onHide = {handleEditClose}
+                    size = "lg"
+                    aria-labelledby = "contained-modal-title-vcenter"
+                    centered
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title id = "contained-modal-title-vcenter">
+                            Edit Comment
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group className="mb-3" controlId={formValue}>
+                                <Form.Label>Edit Comment</Form.Label>
+                                <Form.Control as="textarea" rows={3} value={formValue} onChange={handleChange}/>
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleEditClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={() => {
+                            handleEditClose();
+                            handleCommentEdit(formValue);
+                        }}>
+                            Save Changes
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </>
         );
     }
 

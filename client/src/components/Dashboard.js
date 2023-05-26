@@ -66,34 +66,6 @@ function Dashboard() {
                 });
         };
 
-        // const handleCommentEdit = (commentId, commentData) => {
-        //     axios
-        //         .put(`http://localhost:8082/API/comments/${commentId}`, commentData)
-        //         .then((response) => {
-        //             const newComments = comments.map((comment) => {
-        //                 if (comment._id === commentId) {
-        //                     comment.comment = commentData.comment;
-        //                 }
-        //                 return comment;
-        //             });
-        //             setComments(newComments);
-        //         })
-        //         .catch((err) => {
-        //             console.log("Error in CommentUpdate!", err.response.data);
-        //             console.log("Error details:", err);
-        //         });
-        // };
-
-        const handleCommentUpdate = (commentId, commentData) => {
-            setComments(comments.map((comment) => {
-              if (comment._id === commentId) {
-                return { ...comment, ...commentData };
-              }
-              return comment;
-            }));
-          };
-
-
     return (
         <div>
             <NavBar id = {id} handleCommentSubmit = {handleCommentSubmit} />
@@ -109,6 +81,7 @@ function Dashboard() {
                 <CommentTile
                     key={comment._id}
                     comment={comment.comment}
+                    commentID={comment._id}
                     username={username}
                     id={id}
                     userId={comment.userId}
@@ -117,7 +90,6 @@ function Dashboard() {
                     letterGrade={comment.letterGrade}
                     createdAt={comment.createdAt}
                     updatedAt={comment.updatedAt}
-                    handleCommentUpdate={handleCommentUpdate}
                     handleCommentDelete={() => handleCommentDelete(comment._id)}
                 />
             ))}
