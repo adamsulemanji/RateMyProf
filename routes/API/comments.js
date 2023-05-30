@@ -34,6 +34,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
+    console.log("CommentDelete route accessed");
     Comment.findByIdAndRemove(req.params.id, req.body)
         .then(comment => res.json({ mgs: 'Comment entry deleted successfully' }))
         .catch(err => res.status(404).json({ error: 'No such a comment' }));

@@ -30,7 +30,7 @@ function Home() {
 
 		try {
 			const response = await axios.post(
-				"http://localhost:8082/API/users/login",
+				"/API/users/login",
 				{
 					userEmail,
 					userPassword,

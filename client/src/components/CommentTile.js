@@ -82,7 +82,7 @@ function CommentTile(props) {
             console.log("New comment data:", commentData);
 
             axios
-                .put(`http://localhost:8082/API/comments/${commentID}`, {comment: commentData})
+                .put(`/API/comments/${commentID}`, {comment: commentData})
                 .then((response) => {
                     console.log(response);
                     console.log(response.data);

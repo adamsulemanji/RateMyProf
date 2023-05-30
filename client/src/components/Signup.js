@@ -35,7 +35,7 @@ function Signup(props) {
         e.preventDefault();
 
         axios
-          .post("http://localhost:8082/API/users", formInput)
+          .post("/API/users", formInput)
           .then((response) => {
 
             const { token } = response.data;

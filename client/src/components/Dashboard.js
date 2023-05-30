@@ -29,7 +29,7 @@ function Dashboard() {
             setUsername(tokenPayload.username);
             setId(tokenPayload.id);
       
-            axios.get(`http://localhost:8082/API/comments/user/${tokenPayload.id}`)
+            axios.get(`/API/comments/user/${tokenPayload.id}`)
               .then(response => {
                 setComments(response.data);
               })
@@ -41,7 +41,7 @@ function Dashboard() {
 
         const handleCommentSubmit = (commentData) => {
             axios
-              .post("http://localhost:8082/API/comments", commentData)
+              .post("/API/comments", commentData)
               .then(() => {
                 setComments((prevComments) => [...prevComments, commentData]);
               })
@@ -55,7 +55,7 @@ function Dashboard() {
             console.log("Deleting comment with ID:", commentId);
 
             axios
-                .delete(`http://localhost:8082/API/comments/${commentId}`)
+                .delete(`/API/comments/${commentId}`)
                 .then((response) => {
                     const newComments = comments.filter((comment) => comment._id !== commentId);
                     setComments(newComments);
